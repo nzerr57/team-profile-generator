@@ -21,26 +21,10 @@ if (!fs.existsSync(OUTPUT_DIR)){
   fs.mkdirSync(OUTPUT_DIR);
 };
 
-fs.writeFileSync(outputPath, render([]));
-
-// const addAnother = () => {
-//   inquirer.prompt([
-//     {
-//       type: "confirm",
-//       message: "Would like to add another Employee",
-//       name: "confirm"
-//     }
-//   ]).then((answers) => {
-//     if (answers.confirm) {
-//       createEmployees();
-//     } else {
-//       process.exit();
-//     }
-//   });
-// }
-
 //Empty array to hold all future team members
 const team = [];
+
+
 
 const managerQuestions = [
   {
@@ -111,36 +95,81 @@ const internQuestions = [
   },
 ];
 
-const createEmployees = () => {
-  //inquirer.prompt([
-    {
+
+const createTeam = (answer) => {
+  console.log(answer);
+  if (answer.role === 'Manager') {
+    inquirer.prompt(managerQuestions)
+    .then(function (choice) {
+      console.log(choice);
+
+      const newManager = new Manager(
+        choice.name,
+        choice.id,
+        choice.email,
+        choice.officeNumber
+      );
+      team.push(newManager);
+      console.log('This manager has been added');
+      init();
+    })
+  } else if (answer.role === 'Engineer') {
+    inquirer.prompt(engineerQuestions)
+    .then(function (choice) {
+      console.log(choice);
+
+      const newEngineer = new Engineer(
+        choice.name,
+        choice.id,
+        choice.email,
+        choice.gitHub
+      );
+      team.push(newEngineer);
+      console.log('This engineer has been added');
+      init();
+    })
+  } else if (answer.role === 'Intern') {
+    inquirer.prompt(internQuestions)
+    .then(function (choice) {
+      console.log(choice);
+
+      const newIntern = new Intern(
+        choice.name,
+        choice.id,
+        choice.email,
+        choice.school
+      );
+      team.push(newIntern);
+      console.log('This intern has been added');
+      init();
+    })
+  } else {
+    fs.writeFileSync(outputPath, render(team), (err) => {
+      if (err) throw err;
+      console.log('Check the team.html document in the output foler for your team!')
+    }
+    );
+  }
+};
+
+const chooseRole = [
+      {
       type: "rawlist",
       message: "What type of employee would you like to create?",
-      name: "type",
-      choices: [
+      name: "role",
+      choices: 
+      [
         "Manager",
         "Engineer",
         "Intern",
         "Done creating employees"
-      ]
-    },
-    if (type.choices==='Manager') {
-
-    }
-
-
-
-
-
-
+      ],
+    },];
 
 const init = () => {
-  inquirer.prompt(createEmployees)
-
-
-
-
-  
+  inquirer.prompt(chooseRole)
+  .then(createTeam);
+};
 
 init();
 // Write code to use inquirer to gather information about the development team members,
