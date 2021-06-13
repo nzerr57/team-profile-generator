@@ -102,14 +102,13 @@ const createTeam = (answer) => {
   console.log(answer);
   if (answer.role === 'Manager') {
     inquirer.prompt(managerQuestions)
-      .then(function (choice) {
-        console.log(choice);
+      .then(function (manager) {
 
         const newManager = new Manager(
-          choice.name,
-          choice.id,
-          choice.email,
-          choice.officeNumber
+          manager.name,
+          manager.id,
+          manager.email,
+          manager.officeNumber
         );
         team.push(newManager);
         console.log('This manager has been added');
@@ -117,14 +116,13 @@ const createTeam = (answer) => {
       })
   } else if (answer.role === 'Engineer') {
     inquirer.prompt(engineerQuestions)
-      .then(function (choice) {
-        console.log(choice);
+      .then(function (engineer) {
 
         const newEngineer = new Engineer(
-          choice.name,
-          choice.id,
-          choice.email,
-          choice.gitHub
+          engineer.name,
+          engineer.id,
+          engineer.email,
+          engineer.gitHub
         );
         team.push(newEngineer);
         console.log('This engineer has been added');
@@ -132,14 +130,13 @@ const createTeam = (answer) => {
       })
   } else if (answer.role === 'Intern') {
     inquirer.prompt(internQuestions)
-      .then(function (choice) {
-        console.log(choice);
+      .then(function (intern) {
 
         const newIntern = new Intern(
-          choice.name,
-          choice.id,
-          choice.email,
-          choice.school
+          intern.name,
+          intern.id,
+          intern.email,
+          intern.school
         );
         team.push(newIntern);
         console.log('This intern has been added');
@@ -147,10 +144,10 @@ const createTeam = (answer) => {
       })
   } else {
     fs.writeFileSync(outputPath, render(team), (err) => {
-      if (err) throw err;
-      console.log('Check the team.html document in the output foler for your team!')
+      if (err) throw err
     }
     );
+    console.log('Check the team.html document in the output folder for your team!');
   }
 };
 // Allows user to select employee role
